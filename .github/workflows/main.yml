@@ -1,0 +1,76 @@
+name: 01_BUILD_EXE_PYINSTALLER
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Command
+        shell: cmd
+        run: |
+          cd /d %~dp0
+      - name: Command
+        shell: cmd
+        run: |
+          where pyinstaller >nul 2>nul
+      - name: Command
+        shell: cmd
+        run: |
+          if errorlevel 1 (
+      - name: Command
+        shell: cmd
+        run: |
+          echo PyInstaller is not installed.
+      - name: Command
+        shell: cmd
+        run: |
+          echo Run: pip install pyinstaller
+      - name: Command
+        shell: cmd
+        run: |
+          exit /b 1
+      - name: Command
+        shell: cmd
+        run: |
+          )
+      - name: Command
+        shell: cmd
+        run: |
+          pyinstaller --noconfirm --windowed --onedir --name Complaint_Service_Hub main.py
+      - name: Command
+        shell: cmd
+        run: |
+          xcopy /E /I /Y config dist\Complaint_Service_Hub\config
+      - name: Command
+        shell: cmd
+        run: |
+          xcopy /E /I /Y masters dist\Complaint_Service_Hub\masters
+      - name: Command
+        shell: cmd
+        run: |
+          xcopy /E /I /Y templates dist\Complaint_Service_Hub\templates
+      - name: Command
+        shell: cmd
+        run: |
+          xcopy /E /I /Y profiles dist\Complaint_Service_Hub\profiles
+      - name: Command
+        shell: cmd
+        run: |
+          if not exist dist\Complaint_Service_Hub\logs mkdir dist\Complaint_Service_Hub\logs
+      - name: Command
+        shell: cmd
+        run: |
+          copy README_StartHere.txt dist\Complaint_Service_Hub\README_StartHere.txt
+      - name: Command
+        shell: cmd
+        run: |
+          powershell -NoProfile -ExecutionPolicy Bypass -Command "Compress-Archive -Path 'dist\Complaint_Service_Hub\*' -DestinationPath 'Complaint_Service_Hub_Distribution.zip' -Force"
+      - name: Command
+        shell: cmd
+        run: |
+          echo Build complete: Complaint_Service_Hub_Distribution.zip
